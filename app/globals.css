@@ -1,0 +1,119 @@
+@import "tailwindcss";
+
+/* =====================================================================
+   Design tokens
+   ---------------------------------------------------------------------
+   Committed dark theme. These dashboards live on shop-floor wall screens
+   and on phones held at arm's length, so the palette is tuned for
+   contrast at distance rather than for reading a document.
+   ===================================================================== */
+@theme {
+  --color-bg: #0a0e13;
+  --color-surface: #121a23;
+  --color-surface-2: #1a2532;
+  --color-surface-3: #22303f;
+  --color-line: #2a3849;
+  --color-line-soft: #1e2a37;
+
+  --color-ink: #e8eef6;
+  --color-ink-dim: #a7b6c8;
+  --color-ink-faint: #6f8098;
+
+  --color-brand: #2f9bff;
+  --color-brand-dim: #1e6fd0;
+
+  /* Machine states. Validated with the dataviz palette checker against
+     the --color-surface ground, all pairs:
+       - chromatic pairs clear the normal-vision floor (worst 18.0)
+       - worst CVD pair is completed/paused at 6.6 (protan), which is
+         legal only because every status also carries a text label
+       - maintenance is magenta, not violet: violet sat at deltaE 1.1
+         from printing-blue under protanopia, i.e. indistinguishable
+       - idle/offline are deliberately achromatic and separated by
+         lightness (deltaE 18.0), both clearing 3:1 against the surface */
+  --color-st-printing: #2f9bff;
+  --color-st-idle: #99a7b8;
+  --color-st-paused: #f5a524;
+  --color-st-error: #f4523b;
+  --color-st-offline: #64717f;
+  --color-st-maintenance: #e072c8;
+  --color-st-completed: #2fbf71;
+
+  /* Chart series. Blue/amber is the CVD-safe pair for the two
+     temperature traces; both sit on one shared axis. */
+  --color-series-1: #2f9bff;
+  --color-series-2: #f5a524;
+
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    "Liberation Mono", monospace;
+
+  --radius-card: 14px;
+}
+
+/* =====================================================================
+   Base
+   ===================================================================== */
+html {
+  color-scheme: dark;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  /* Room for the mobile tab bar; overridden at md+ in the shell. */
+  overscroll-behavior-y: none;
+}
+
+/* Figures that update every few seconds must not reflow as digits
+   change width. */
+.tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+::selection {
+  background: var(--color-brand-dim);
+  color: #fff;
+}
+
+*:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Thin scrollbars so wide tables don't gain a chunky bar on desktop. */
+@supports (scrollbar-width: thin) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-line) transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Live-status pulse, used on the "live" indicator only. */
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+.pulse-dot {
+  animation: pulse-dot 2s ease-in-out infinite;
+}
