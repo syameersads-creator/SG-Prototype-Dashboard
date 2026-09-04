@@ -87,7 +87,7 @@ export function TelemetryCharts({ rows }: { rows: PrinterTelemetryRow[] }) {
         empty={!hasProgress}
       >
         <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={data} margin={{ top: 4, right: 8, bottom: 0, left: -18 }}>
+          <AreaChart data={data} margin={{ top: 4, right: 10, bottom: 0, left: 0 }}>
             <defs>
               <linearGradient id="progressFill" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor={SERIES_1} stopOpacity={0.35} />
@@ -161,7 +161,7 @@ export function TelemetryCharts({ rows }: { rows: PrinterTelemetryRow[] }) {
         }
       >
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={data} margin={{ top: 4, right: 8, bottom: 0, left: -18 }}>
+          <LineChart data={data} margin={{ top: 4, right: 10, bottom: 0, left: 0 }}>
             <CartesianGrid stroke={GRID} vertical={false} />
             <XAxis
               dataKey="t"

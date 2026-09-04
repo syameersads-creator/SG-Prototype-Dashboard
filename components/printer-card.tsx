@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { PRINTER_STATUS } from "@/lib/status";
+import { PRINTER_STATUS, needsAttention } from "@/lib/status";
 import { StatusPill } from "@/components/status-pill";
 import { ProgressBar } from "@/components/progress-bar";
 import {
@@ -61,7 +61,9 @@ export function PrinterCard({
                 ? "Out of service"
                 : "No active lot"}
             </p>
-            {row.status_note && (
+            {/* Error and offline notes get the dedicated banner below,
+                so don't repeat them here. */}
+            {row.status_note && !needsAttention(row.printer_status) && (
               <p className="mt-0.5 truncate text-[11px] text-ink-faint/80">
                 {row.status_note}
               </p>
@@ -118,12 +120,11 @@ export function PrinterCard({
 
       {/* An errored or offline machine is the one thing an operator must
           not have to hunt for, so it gets its own line. */}
-      {(row.printer_status === "error" || row.printer_status === "offline") &&
-        row.status_note && (
-          <p className="mt-3 truncate rounded-md bg-st-error/10 px-2 py-1.5 text-[11px] text-st-error ring-1 ring-st-error/20">
-            {row.status_note}
-          </p>
-        )}
+      {needsAttention(row.printer_status) && row.status_note && (
+        <p className="mt-3 truncate rounded-md bg-st-error/10 px-2 py-1.5 text-[11px] text-st-error ring-1 ring-st-error/20">
+          {row.status_note}
+        </p>
+      )}
 
       {row.printer_status === "offline" && (
         <p className="mt-2 text-[11px] text-ink-faint">
